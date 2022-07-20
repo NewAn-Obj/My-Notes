@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            height: 100px;
+            width: 298px;
+            border: 1px solid skyblue;
+            border-bottom: 0px;
+        }
+        .box h4 {
+            text-align: center;
+        }
+        .btnBox {
+            display: flex;
+            width: 300px;
+            justify-content: space-between;
+        }
+        button {
+            width: 150px;
+            height: 30px;
+            border: 1px solid skyblue;
+            background-color: #fff;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h4>随机点名</h4>
+        <span>名字是：</span>
+        <span class="name">123456</span>
+        </div>
+    </div>
+    <div class='btnBox'>
+        <button class="start">开始</button>
+        <button class="end">结束</button>
+    </div>
+    <script>
+        let arr = ['赵云', '黄忠', '关羽', '马超', '刘备', '曹操', '张飞']
+        function getRandom (min,max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min
+        }
+        let name = document.querySelector('.box .name')
+        let start = document.querySelector('.start')
+        let end = document.querySelector('.end')
+        let startName
+        let random
+        start.addEventListener('click',function(){
+            startName = setInterval(function(){
+                random = getRandom(0, arr.length - 1)
+                name.innerHTML = arr[random]
+            },50)
+            if (arr.length === 1) {
+            start.disabled = true
+            end.disabled = true
+        }
+        })
+        end.addEventListener('click',function(){
+            clearInterval(startName)
+            arr.splice(random,1)
+        })
+        
+    </script>
+</body>
+</html>

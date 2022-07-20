@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table {
+            width: 600px;
+            text-align: center;
+        }
+        table,
+        th,
+        td {
+            border: 1px solid #ccc;
+            border-collapse: collapse;
+        }
+        caption {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        tr {
+            height: 40px;
+            cursor: pointer;
+        }
+        table tr:nth-child(1) {
+            background-color: #ddd;
+        }
+        table tr:not(:first-child):hover {
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        let studentsArry = [
+        {name: '小明', age: 18, gender: '男', hometown: '河北省'},
+        {name: '小红', age: 19, gender: '女', hometown: '河南省'},
+        {name: '小刚', age: 17, gender: '男', hometown: '山西省'},
+        {name: '小丽', age: 18, gender: '女', hometown: '山东省'}
+        ]
+        // function getStudents () {
+        //     for (let i = 0;i < studentsArry.length;i++) {
+        //         for ( k in studentsArry[i]){
+        //             return studentsArry[i][k]
+        //         }
+        //     }
+        // }
+        // let obj = studentsArry[1]['name']
+        // console.log(obj)
+        document.write(`<table>
+        <caption>学生信息表</caption>
+        <tbody>
+            <tr>
+                <th>序号</th>
+                <th>姓名</th>
+                <th>年龄</th>
+                <th>性别</th>
+                <th>家乡</th>
+            </tr>`)
+        for (i = 0;i < studentsArry.length;i++) {
+            document.write(`
+            <tr>
+                <th>${i + 1}</th>
+                <th>${studentsArry[i].name}</th>
+                <th>${studentsArry[i]['age']}</th>
+                <th>${studentsArry[i]['gender']}</th>
+                <th>${studentsArry[i]['hometown']}</th>
+            </tr>
+            `)
+        }
+        document.write(`<table>`)
+    </script>
+</body>
+</html>

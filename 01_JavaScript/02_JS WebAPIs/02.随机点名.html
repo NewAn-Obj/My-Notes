@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            margin: 100px auto;
+        }
+        .box div {
+            height: 40px;
+            width: 150px;
+            border: 1px solid #ccc;
+            text-align: center;
+            line-height: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div></div>
+        <button>开始点名</button>
+        <script>
+            let arr = ['赵云', '黄忠', '关羽', '马超', '刘备', '曹操', '张飞']
+            function getRandom (min,max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min
+            }
+            let nameSheet = document.querySelector('.box div')
+            let btn = document.querySelector('button')
+            btn.addEventListener('click',function(){
+                let random = getRandom(0, arr.length - 1)
+                nameSheet.innerHTML = arr[random]
+                arr.splice(random,1)
+                if(arr.length === 0) {
+                    btn.disabled = true
+                    btn.innerHTML = '完成点名'
+                }
+                console.log(arr.length)
+            })
+        </script>
+    </div>
+</body>
+</html>

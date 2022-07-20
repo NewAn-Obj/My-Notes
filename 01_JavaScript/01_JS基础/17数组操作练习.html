@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let arr = [45, 0, 78, 56, 12, 0, 34, 91, 67, 27]
+        document.write(`数组arr为[${arr}]`)
+        //将数组中大于30且小于50的元素放入新的数组
+        let arr1 = []
+        for (let i = 0;i < arr.length;i++) {
+            if (arr[i] > 30 && arr[i] < 50) {
+                arr1.push(arr[i])
+            }
+        }
+        document.write(`<br>数组arr1为[${arr1}]`)
+
+        //数组去0
+        let arr2 = []
+        for (let i = 0;i < arr.length;i++) {
+            if (arr[i] !== 0) {
+                arr2.push(arr[i])
+            }
+        }
+        document.write(`<br>数组arr2为[${arr2}]`)
+    </script>
+</body>
+</html>

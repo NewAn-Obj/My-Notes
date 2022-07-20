@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let second = prompt('请输入秒数')
+        function secondToHour() {
+            // let day = parseInt(second / 60 / 60 % 365)
+            let hour = parseInt(second / 60 / 60)
+            let minute = parseInt(second / 60 % 60)
+            let newSecond = parseInt(second % 60)
+            // day = day < 10 ? '0' + day : day
+            hour = hour < 10 ? '0' + hour : hour
+            minute = minute < 10 ? '0' + minute : minute
+            newSecond = newSecond < 10 ? '0' + newSecond : newSecond
+            return `${second}秒是${hour}小时${minute}分${newSecond}秒`
+        }
+        document.write(secondToHour())
+        
+    //    let num = 12
+    //    num = 12 % 1
+    //    console.log(num);
+    </script>
+</body>
+</html>

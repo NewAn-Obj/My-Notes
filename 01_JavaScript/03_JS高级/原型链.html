@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function Person (){
+            this.age = 28
+            this.gender = 'woman'
+        }
+        Person.prototype.sayHi = () =>{
+            console.log('你好')
+        }
+        const person1 = new Person
+        // console.log(person1.__proto__.constructor)
+        // console.log(Person.prototype.__proto__.constructor === Object)
+        // console.log(Object.prototype.constructor);
+        person1.__proto__.dance = () => {
+            console.log('跳舞');
+        }
+        console.log(person1);
+        // person1.constructor = Person
+    </script>
+</body>
+</html>

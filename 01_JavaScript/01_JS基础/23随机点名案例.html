@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let arr = ['赵云', '黄忠', '关羽', '马超', '刘备', '曹操', '张飞']
+        // 曹操 刘备 马超 
+        function getRandom (min,max){
+            return Math.floor(Math.random() * (max - min +1)) + min
+        }
+        let a = getRandom(0,arr.length - 1)
+        console.log(arr[a])
+        document.write(arr[a])
+        function newArr (a) {
+            arr.splice(a,1)
+            return arr
+        }
+        document.write(`<br>${newArr(a)}`)
+    </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function getRandom (min,max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min
+        }
+        let random = getRandom(0,10)
+        console.log(random)
+        let flag = 1
+        while (flag === 1) {
+            let a = +prompt('请输入数字')
+        if (a < random) {
+            alert('数字猜小了，请重新输入')
+        }else if(a > random){
+            alert('数字猜大了，请重新输入')
+        }else{
+            alert("恭喜你，猜对了!")
+            flag = 0
+        }
+        }
+        
+    </script>
+</body>
+</html>

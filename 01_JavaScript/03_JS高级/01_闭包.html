@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // function outer (){
+        //     let i = 100
+        //         function inner (){
+        //             console.log(i)
+        //     }
+        //     inner()
+        // }
+        // outer()
+
+        function outer1 (){
+            let i = 10
+                function inner (){
+                    console.log(i)
+            }
+            return inner
+        }
+        const fun = outer1()
+        fun()
+
+        const arr1 = [1,2,3,4,5]
+        console.log(Math.max(arr1))
+        console.log(Math.max(...arr1))
+    </script>
+</body>
+</html>

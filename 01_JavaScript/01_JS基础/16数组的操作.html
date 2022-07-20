@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let arr = [45, 56, 79, 32, 65, 14]
+        //查
+        
+        console.log(arr[0])
+        
+        //改
+        arr[3] = 81
+        console.log(arr);
+
+        //增
+            /*push
+            数组的push方法可以将一个或多个元素添加到数组的末尾，并返回该数组的新长度
+            */
+           arr.push('blue',true)
+           console.log('push后的新数组为：'+arr)
+        /*unshift
+        数组的unshift方法可以将一个或多个元素添加到数组的开头，并返回该数组的新长度
+        */
+       arr.unshift(55,'黑马程序员')
+       console.log('unshift后的新数组为：'+arr)
+
+       //删
+        /*pop
+        arr.pop()方法可以删除数组的最后一个元素，并返回删除的元素的数组
+        */
+        //    arr.pop()
+        console.log('pop删除的元素为：' + arr.pop())
+        console.log('pop删除后的数组为：' + arr)
+       /*shift
+        arr.shift()方法可以删除数组的第一个元素，并返回删除的元素的数组
+        */
+        //    arr.shift()
+       console.log('shift删除的元素为：'+ arr.shift())
+       console.log('shift()后的数组为：'+ arr)
+       //splice
+       /*arr.splice(从哪里开始删，删几个<如果不写则删除后面的所有元素>)  删除指定位置的数组，并返回删除的元素的数组
+        */
+       arr.splice(1,1)
+       console.log('splice删除的元素为：'+ arr.splice())
+       console.log('splice()后的数组为：'+ arr)
+    </script>
+</body>
+</html>

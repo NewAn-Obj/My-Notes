@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .erweima {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 100px auto;
+            border: 1px solid #ccc;
+            background-color: #bfa;
+        }
+        .erweima i {
+            position: absolute;
+            left: -12px;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            border: 1px solid #ccc;
+            font-size: 12px;
+            line-height: 7px;
+            font-size: 13px;
+            font-style: normal;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="erweima">
+        <img src="./images/code.png" alt="">
+        <i class="close_btn">x</i>
+    </div>
+    <script>
+        // let erweima = document.querySelector('.erweima')
+        let close_btn = document.querySelector('.close_btn')
+        close_btn.addEventListener('click',function(){
+            // erweima.style.display = 'none'
+            close_btn.parentNode.style.display = 'none'
+        })
+    </script>
+</body>
+</html>

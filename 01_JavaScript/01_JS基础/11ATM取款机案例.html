@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let balance = 1000
+        let flag = 1
+        while (flag === 1) {
+            let op = prompt(`①存款
+②取款
+③查看余额
+④退出
+请输入你要进行的操作`)
+        switch (op) {
+            case '1':
+                balance = balance + +prompt('请输入你要存储的金额')
+            break
+            case '2':
+            balance = balance - +prompt('请输入你要取出的金额')
+            break
+            case '3':
+                alert(`你的当前余额为${balance}元`)
+            break
+            case '4':
+                flag = 0
+            break
+            default:
+                alert('请输入有效操作')
+            break
+        }
+        }
+        
+    </script>
+</body>
+</html>
