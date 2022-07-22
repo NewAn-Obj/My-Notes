@@ -5,12 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>首页</title>
+
+   
+
     <link rel="stylesheet" href="./bootstrap/bootstrap.min.css" />
     <link rel="stylesheet" href="./bootstrap/bootstrap-icons.css" />
     <link rel="stylesheet" href="./css/common.css" />
     <link rel="stylesheet" href="./css/index.css" />
   </head>
   <body class="application application-offset">
+    <!-- toast -->
+    <div class="position-fixed top-0 start-50 pt-4" style="z-index: 999; transform: translateX(-50%)">
+      <div id="myToast" class="toast bg-rgba">
+        <div class="toast-body">提示消息</div>
+      </div>
+    </div>
     <div class="container-fluid container-application">
       <div class="sidenav show" id="sidenav-main">
         <!-- Sidenav header -->
@@ -100,7 +109,7 @@
                         <img alt="Image placeholder" src="https://yanxuan-item.nosdn.127.net/8b27deb1670c53e67c42ca3e1ed6fd12.jpg" />
                       </span>
                       <div class="ml-2 d-none d-lg-block">
-                        <span class="mb-0 text-sm font-weight-bold">Admin</span>
+                        <span class="mb-0 text-sm font-weight-bold">未登录</span>
                       </div>
                     </div>
                   </a>
@@ -247,8 +256,18 @@
     <script src="./bootstrap/bootstrap.min.js"></script>
     <script src="./lib/axios.js"></script>
     <script src="./lib/echarts.min.js"></script>
-    <script src="./js/common.js"></script>
     <script src="./lib/china.js"></script>
     <script src="./js/index.js"></script>
+    <script src="./js/common.js"></script>
+
+    <script>
+      if(localStorage.getItem('user-token') === null){
+        tip('未登录，正在前往登录页')
+        setTimeout(()=>{
+            location.href = './login.html'
+          },300)
+      }
+    </script>
+
   </body>
 </html>

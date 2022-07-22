@@ -11,6 +11,13 @@
     <link rel="stylesheet" href="./css/student.css" />
   </head>
   <body class="application application-offset">
+    <!-- toast -->
+    <div class="position-fixed top-0 start-50 pt-4" style="z-index: 999; transform: translateX(-50%)">
+      <div id="myToast" class="toast bg-rgba">
+        <div class="toast-body">提示消息</div>
+      </div>
+    </div>
+
     <div class="container-fluid container-application">
       <div class="sidenav show" id="sidenav-main">
         <!-- Sidenav header -->
@@ -271,8 +278,15 @@
     <script src="./lib/axios.js"></script>
     <script src="./lib/form-serialize.js"></script>
     <script src="./js/common.js"></script>
+
     <script>
-      
+      // 没有token，则无法访问
+      if(localStorage.getItem('user-token') === null){
+        tip('未登录，正在前往登录页')
+        setTimeout(()=>{
+            location.href = './login.html'
+          },300)
+      }
     </script>
   </body>
 </html>

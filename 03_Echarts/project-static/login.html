@@ -98,8 +98,11 @@
         if (data.password.length < 6 ) return tip('密码不能小于 6 位数 ')
 
         try{
-          await axios.post('/login',data)
+          const res = await axios.post('/login',data)
           tip('登录成功，正在前往首页')
+          localStorage.setItem('user-token',res.data.token)
+          localStorage.setItem('user-name',res.data.username)
+          // console.log(res)
           setTimeout(()=>{
             location.href = './index.html'
           },200)
