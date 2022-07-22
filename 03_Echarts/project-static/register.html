@@ -22,7 +22,7 @@
                   <div class="card shadow zindex-100 mb-0">
                     <div class="card-body px-md-5 py-5">
                       <div class="mb-5">
-                        <h6 class="h3">传智教育-登录</h6>
+                        <h6 class="h3">传智教育-注册</h6>
                       </div>
                       <span class="clearfix"></span>
                       <form role="form" autocomplete="off">
@@ -59,15 +59,15 @@
                           </div>
                         </div>
                         <div class="mt-4">
-                          <button id="btn-login" type="button" class="btn btn-sm btn-info btn-icon btn-blue rounded-pill">
-                            <span class="btn-inner--text">登录</span>
+                          <button id="btn-register" type="button" class="btn btn-sm btn-info btn-icon btn-blue rounded-pill">
+                            <span class="btn-inner--text">注册</span>
                             <span class="btn-inner--icon"><i class="bi bi-arrow-right"></i></span>
                           </button>
                         </div>
                       </form>
                     </div>
                     <div class="card-footer px-md-5">
-                      <small>没有注册？</small> <a href="./register.html" class="small font-weight-bold text-blue">创建账号</a>
+                      <small>已经注册？</small> <a href="./login.html" class="small font-weight-bold text-blue">去登录吧</a>
                     </div>
                   </div>
                 </div>
@@ -88,35 +88,36 @@
     <script src="./lib/axios.js"></script>
     <script src="./js/common.js"></script>
     <script>
-      const btnLogin = document.querySelector('#btn-login')
-      const form = document.querySelector('form')
-      
-      btnLogin.addEventListener('click', async function() {
-        // 收集表单数据
-        const data = serialize(form, { hash: true })
-        // 非空校验，长度校验
-        if (!data.username || data.username.trim() === '') return tip('用户名不能为空')
-        if (!data.password || data.password.trim() === '') return tip('密码不能为空')
-        if (data.password.length < 6) return tip('密码的长度不能小于 6 位')
+      // 整个项目axios的配置，应该也是统一的 => common.js
 
-        // 发送登录请求
-        try {
-          const res = await axios.post('/login', data)
-          // 将个人信息 和 token令牌字符串，都存到本地
-          localStorage.setItem('user-token', res.data.token)
-          localStorage.setItem('user-name', res.data.username)
-          tip(res.message)
-          location.href = './index.html'
-        } catch (e) {
-          // console.dir(e)
-          if (e.response.status === 400) {
-            tip('用户名或密码错误')
-            return
+      // 注册逻辑：
+      // 1. 配置请求基地址
+      // 2. 注册点击事件，收集表单数据
+      // 3. 非空校验, 长度校验
+      // 4. 发送请求
+      // 5. 处理响应
+
+      const registerBtn = document.querySelector('#btn-register')
+      const form = document.querySelector('form')
+      registerBtn.addEventListener('click',async function(){
+        const data = serialize(form,{hash : true}) 
+        if (!data.username || data.username.trim() === '') return tip('账号不能为空')
+        if (!data.password || data.password.trim() === '') return tip('密码不能为空')
+        if (data.password.length < 6 ) return tip('密码不能小于 6 位数 ')
+
+        try{
+          await axios.post('./register',data)
+          tip('注册成功，正在前往登录')
+          setTimeout(()=>{
+            location.href = './login.html'
+          },500)
+        }catch(e){
+          if (e.response.status === 409){
+            return tip(e.response.data.message)
           }
-          tip('服务器繁忙，请稍后重试')
+          tip('注册失败，服务器繁忙，请稍后重试')
         }
       })
-
     </script>
   </body>
 </html>

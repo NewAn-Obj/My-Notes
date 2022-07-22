@@ -22,7 +22,7 @@
                   <div class="card shadow zindex-100 mb-0">
                     <div class="card-body px-md-5 py-5">
                       <div class="mb-5">
-                        <h6 class="h3">传智教育-注册</h6>
+                        <h6 class="h3">传智教育-登录</h6>
                       </div>
                       <span class="clearfix"></span>
                       <form role="form" autocomplete="off">
@@ -59,15 +59,15 @@
                           </div>
                         </div>
                         <div class="mt-4">
-                          <button id="btn-register" type="button" class="btn btn-sm btn-info btn-icon btn-blue rounded-pill">
-                            <span class="btn-inner--text">注册</span>
+                          <button id="btn-login" type="button" class="btn btn-sm btn-info btn-icon btn-blue rounded-pill">
+                            <span class="btn-inner--text">登录</span>
                             <span class="btn-inner--icon"><i class="bi bi-arrow-right"></i></span>
                           </button>
                         </div>
                       </form>
                     </div>
                     <div class="card-footer px-md-5">
-                      <small>已经注册？</small> <a href="./login.html" class="small font-weight-bold text-blue">去登录吧</a>
+                      <small>没有注册？</small> <a href="./register.html" class="small font-weight-bold text-blue">创建账号</a>
                     </div>
                   </div>
                 </div>
@@ -88,44 +88,28 @@
     <script src="./lib/axios.js"></script>
     <script src="./js/common.js"></script>
     <script>
-      // 整个项目axios的配置，应该也是统一的 => common.js
 
-      // 注册逻辑：
-      // 1. 配置请求基地址
-      // 2. 注册点击事件，收集表单数据
-      // 3. 非空校验, 长度校验
-      // 4. 发送请求
-      // 5. 处理响应
-      const btnRegister = document.querySelector('#btn-register')
+      const loginBtn = document.querySelector('#btn-login')
       const form = document.querySelector('form')
-      
-      btnRegister.addEventListener('click', async function() {
-        // 收集表单数据
-        const data = serialize(form, { hash: true })
-        // 非空校验，长度校验
-        if (!data.username || data.username.trim() === '') return tip('用户名不能为空')
+      loginBtn.addEventListener('click',async function(){
+        const data = serialize(form,{hash : true}) 
+        if (!data.username || data.username.trim() === '') return tip('账号不能为空')
         if (!data.password || data.password.trim() === '') return tip('密码不能为空')
-        if (data.password.length < 6) return tip('密码的长度不能小于 6 位')
+        if (data.password.length < 6 ) return tip('密码不能小于 6 位数 ')
 
-        // 发送请求 await 只会等待成功的结果，如果要处理失败，需要try catch
-        try {
-          await axios.post('/register', data)
-          tip('注册成功')
+        try{
+          await axios.post('/login',data)
+          tip('登录成功，正在前往首页')
+          setTimeout(()=>{
+            location.href = './index.html'
+          },200)
+        }catch(e){
+          // console.dir(e.response)
+          if(e.response.status === 400) return tip(e.response.data.message)
 
-          // console.log(aa) // js是单线程的，一旦出错，就会中断执行
-          setTimeout(() => {
-            location.href = './login.html' // 注册成功跳转登录
-          }, 500)
-        } catch (e) {
-          // console.dir(e)    // 以对象的方式打印一些错误信息， 默认错误信息只展示文本
-          // 状态码409, 表示用户名已存在
-          if (e.response.status === 409) {
-            return tip(e.response.data.message)
-          }
-          tip('注册失败，服务器繁忙')
+          tip('服务器繁忙，请稍后重试')
         }
       })
-
     </script>
   </body>
 </html>

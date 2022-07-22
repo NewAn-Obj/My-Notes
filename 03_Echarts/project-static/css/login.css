@@ -11,3 +11,6 @@
 .text-blue:hover {
   color: #499FEE;
 }
+#myToast .toast-body{
+  text-align: center;
+}
