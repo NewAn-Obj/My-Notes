@@ -287,6 +287,52 @@
             location.href = './login.html'
           },300)
       }
+
+      // 学生列表渲染：
+      // 1. 封装一个渲染函数
+      // 2. 发送请求获取数据
+      // 3. 遍历数组组合结构
+      // 4. 调用渲染
+      async function renderList () {
+        const { data } = await axios.get('/students')
+        // 希望得到的是一个合并完的html字符串
+        const htmlStr = data.map(item => {
+          return `<tr>
+                    <td>${item.name}</td>
+                    <td>${item.age}</td>
+                    <td>${item.gender === 0 ? '男' : '女'}</td>
+                    <td>第${item.group}组</td>
+                    <td>${item.hope_salary}</td>
+                    <td>${item.salary}</td>
+                    <td>${item.province} ${item.city} ${item.area}</td>
+                    <td>
+                      <a href="javascript:;" class="text-success mr-3"><i data-id="${item.id}" class="bi bi-pen"></i></a>
+                      <a href="javascript:;" class="text-danger"><i data-id="${item.id}" class="bi bi-trash"></i></a>
+                    </td>
+                  </tr>`
+        }).join('')
+        document.querySelector('.list').innerHTML = htmlStr
+        document.querySelector('.total').innerHTML = data.length
+      }
+      renderList()
+
+      // 删除学生信息按钮
+      document.querySelector('.list').addEventListener('click', async (e) => {
+        const btn = e.target
+        // 判断当前被点击的 i 按钮，有没有 bi-trash 的类，如果有，就是删除
+        if (btn.classList.contains('bi-trash')) {
+          // 获取要删除的用户 id
+          const id = btn.dataset.id
+          // 删除操作，发送删除请求，成功重新渲染
+          try {
+            await axios.delete(`/students/${id}`)
+            renderList()
+          } catch (e) {
+            alert('删除失败')
+            console.dir(e)
+          }
+        }
+      })
     </script>
   </body>
 </html>
