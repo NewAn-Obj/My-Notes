@@ -333,6 +333,104 @@
           }
         }
       })
+
+      // 实例化一个modal框
+      const modalBox = document.querySelector('#modal')
+      const modal = new bootstrap.Modal(modalBox)
+
+      const form = document.querySelector('#form')
+      const title = document.querySelector('#modal .modal-title')
+      const pSelect = document.querySelector('[name=province]') // 省份province select
+      const cSelect = document.querySelector('[name=city]') // 城市city select
+      const aSelect = document.querySelector('[name=area]') // 地区area select
+      const submitBtn = document.querySelector('#submit')
+
+      // 点击添加按钮模态框显示  modal.show() // hide toggle
+      document.querySelector('#openModal').addEventListener('click', () => {
+        // 1. 重置表单
+        form.reset()
+        // 2. 设置标题
+        title.innerHTML = '添加学员'
+        // 3. 添加一个标识，将来区分到底进行的是添加还是修改
+        //    如果是添加，记录一个字符串 "add"
+        //    如果是修改，记录一个修改的id
+        //    发现记录的值是字符串，说明是添加否则是修改
+        modalBox.dataset.id = 'add'
+        // 显示弹框
+        modal.show()
+      })
+
+      // 初始化省市区联动的功能
+      const initCity = async () => {
+        // 1. 动态渲染省份
+        //    发送请求，组合结构，动态渲染
+        const { data: province } = await axios.get('/api/province')
+        const phtml = province.map(item => `<option value="${item}">${item}</option>`).join('')
+        pSelect.innerHTML = `<option value="">--省份--</option>${phtml}`
+
+        // 2. 监听省份的选择
+        pSelect.addEventListener('change', async () => {
+          cSelect.value = '' // 可写可不写，不写，下面渲染，也会重置
+          aSelect.value = '' // 只重置区即可，下面动态渲染时，其实已经重置了
+          // 发送请求
+          const { data: city } = await axios.get('/api/city', {
+            params: {
+              pname: pSelect.value // 省份的数据
+            }
+          })
+          // 组合结构，渲染城市
+          const chtml = city.map(item => `<option value="${item}">${item}</option>`).join('')
+          cSelect.innerHTML = `<option value="">--城市--</option>${chtml}`
+        })
+        // 3. 监听城市的选择
+        cSelect.addEventListener('change', async () => {
+          // 发送请求获取地区数据
+          const { data: area } = await axios.get('/api/area', {
+            params: {
+              pname: pSelect.value, // 省份的数据
+              cname: cSelect.value  // 城市的数据
+            }
+          })
+          // 组合结构，渲染地区
+          const ahtml = area.map(item => `<option value="${item}">${item}</option>`).join('')
+          aSelect.innerHTML = `<option value="">--地区--</option>${ahtml}`
+        })
+      }
+      initCity()
+
+      submitBtn.addEventListener('click', async () => {
+        // 收集表单数据
+        const data = serialize(form, { hash: true })
+        // 处理类型，处理成数字
+        data.age = +data.age
+        data.gender = +data.gender
+        data.hope_salary = +data.hope_salary
+        data.salary = +data.salary
+        data.group = +data.group
+        // 发送请求提交, 做个判断
+        // 判断是否是添加操作，如果是，发送添加请求
+        if (modalBox.dataset.id === 'add') {
+          // 添加操作
+          try {
+            await axios.post('/students', data)
+            renderList() // 重新渲染页面
+            modal.hide() // 关闭弹框
+          } catch(e) {
+            console.dir(e)
+            alert('添加失败')
+          }
+        } else {
+          // 修改操作
+          try {
+            await axios.put(`/students/${modalBox.dataset.id}`, data)
+            renderList() // 重新渲染页面
+            modal.hide() // 关闭弹框
+          } catch (e) {
+            console.dir(e)
+            alert('修改失败')
+          }
+        }
+      })
     </script>
   </body>
 </html>
