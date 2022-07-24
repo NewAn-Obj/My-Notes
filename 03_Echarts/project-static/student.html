@@ -316,7 +316,7 @@
       }
       renderList()
 
-      // 删除学生信息按钮
+      // 删除和编辑学生信息按钮
       document.querySelector('.list').addEventListener('click', async (e) => {
         const btn = e.target
         // 判断当前被点击的 i 按钮，有没有 bi-trash 的类，如果有，就是删除
@@ -332,7 +332,64 @@
             console.dir(e)
           }
         }
+
+
+        // 点击是编辑按钮 显示弹框
+        if (btn.classList.contains('bi-pen')) {
+          // 将点击的编辑按钮的 id， 存到对话框上 （对话框是唯一的，要改谁，就存谁的id）
+          modalBox.dataset.id = btn.dataset.id
+          title.innerHTML = '修改学员'
+
+          // 发送请求获取数据
+          const { data: student } = await axios.get(`/students/${modalBox.dataset.id}`)
+
+          // 遍历表单完成回显, 一次性拿到了10个有name属性的表单元素
+          const fields = Array.from(document.querySelectorAll('#form [name]'))
+          fields.forEach(item => {
+            if (item.name === 'gender') {
+              // 单选框要单独处理, 两个单选框，不能都选中
+              // 看input的value值 和 student.gender 是否相等，相等才选中
+              if (+item.value === student.gender) {
+                item.checked = true
+              }
+            } else {
+              // input框，select框，都可以通过.value赋值
+              // item 就是 每个有name的表单元素，item.name  => 表单元素input的name值
+              // 利用每个item.name值，就可以去student中用中括号语法去取值~
+              item.value = student[item.name]
+            }
+          })
+          
+          // 根据student.province, 要获取所有的城市，渲染城市，设置选中的是哪个市区
+          // 发送请求
+          const { data: city } = await axios.get('/api/city', {
+            params: {
+              pname: pSelect.value // 省份的数据
+            }
+          })
+          // 组合结构，渲染城市
+          const chtml = city.map(item => `<option value="${item}">${item}</option>`).join('')
+          cSelect.innerHTML = `<option value="">--城市--</option>${chtml}`
+          cSelect.value = student.city
+
+          // 根据student.city, 要获取所有的地区，渲染地区，设置选中的是哪个地区
+          // 发送请求获取地区数据
+          const { data: area } = await axios.get('/api/area', {
+            params: {
+              pname: pSelect.value, // 省份的数据
+              cname: cSelect.value  // 城市的数据
+            }
+          })
+          // 组合结构，渲染地区
+          const ahtml = area.map(item => `<option value="${item}">${item}</option>`).join('')
+          aSelect.innerHTML = `<option value="">--地区--</option>${ahtml}`
+          aSelect.value = student.area
+
+          // 回显完成，显示弹框
+          modal.show()
+        }
       })
+      
 
       // 实例化一个modal框
       const modalBox = document.querySelector('#modal')
@@ -420,7 +477,7 @@
             alert('添加失败')
           }
         } else {
-          // 修改操作
+          // 不是删除，就是修改操作
           try {
             await axios.put(`/students/${modalBox.dataset.id}`, data)
             renderList() // 重新渲染页面
