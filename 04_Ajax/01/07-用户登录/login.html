@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/bootstrap-v4.6.0.css">
+  <link rel="stylesheet" href="./css/login.css">
+</head>
+
+<body>
+  <div class="login-box">
+    <div class="form-group">
+      <label for="username">Account</label>
+      <!-- 账号 -->
+      <input type="text" class="form-control" id="username" autocomplete="off">
+      <small id="emailHelp" class="form-text text-muted">The available account is <strong>admin</strong></small>
+    </div>
+    <div class="form-group">
+      <!-- 密码 -->
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="password">
+      <small id="emailHelp" class="form-text text-muted">The available password is <strong>123456</strong></small>
+    </div>
+    <button type="submit" class="btn btn-primary" id="btnLogin">Submit</button>
+  </div>
+
+  <script src="./lib/axios.js"></script>
+
+  <script>
+    // 请求方式 POST
+    // 地址 http://www.liulongbin.top:3009/api/login
+    // 参数:  username 用户名     password  密码  ==> 请求体参数，写在data中
+
+    // 步骤
+    //  1. 给按钮注册click
+    //  2. 获取输入框的值 ==> value属性
+    //  3. 使用axios发送请求，之后根据响应结果，做提示
+
+    // 1. 
+    document.querySelector('#btnLogin').addEventListener('click', function () {
+      // 2. 
+      let username = document.querySelector('#username').value
+      let password = document.querySelector('#password').value
+      // console.log(username, password)
+
+      // 3. 
+      axios({
+        method: 'post', // post 无论大小写都是可以的
+        url: 'http://www.liulongbin.top:3009/api/login',
+        data: {
+          // 对象属性简写
+          username,
+          password
+        }
+      }).then(({ data: res }) => {
+        // 请求成功
+
+        console.log(res) // res 服务器响应回来的数据
+
+        // 200 是业务状态码（不是写死的，从响应体数据里面去看）
+        if (res.code === 200) {
+          // 登录成功
+          alert('恭喜你，登录成功了，稍后跳转去首页')
+          // location.href = 'http://www.jd.com'
+        } else {
+          // 登录失败
+          alert(res.msg)
+        }
+      })
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 解构赋值：目的： 快速的取值 
+
+    const obj = {
+      username: 'zs',
+      age: 18,
+      car: {
+        name: '劳斯莱斯',
+        price: 1000
+      },
+      house: {
+        name: '新疆海景房',
+        price: 5
+      }
+    }
+
+    // ========================= 取出对象obj的car和house属性 ========================= 
+    // let car = obj.car
+    // let house = obj.house
+    // console.log(car)
+    // console.log(car.name)
+    // console.log(car.price)
+    // console.log(house)
+    // console.log(house.name)
+    // console.log(house.price)
+
+    // ========================= 解构赋值写法 =========================
+    // let {car, house} = obj
+    // console.log(car, house)
+
+    // =========================  重命名 =========================
+    // let { car: car2 } = obj
+    // console.log(car2)
+    // console.log(car) // 原来的car变量名无法使用的
+
+
+    // =========================  深层解构 =========================
+    let { car: { name, price } } = obj
+    console.log(name, price)
+    console.log(car)// 原来的car变量名无法使用的
+
+
+    // let { house: { name, price } } = obj
+    // console.log(name, price)
+
+    // 对car 和 house 都深层解构
+    // let { house: { name, price }, car: { name: carName, price: carPrice } } = obj
+    // console.log(name, price, carName, carPrice)
+
+
+    // ========================= 解构赋值还可以用于在函数参数上 =========================
+    // function fn(info) {
+    //   console.log(info)
+    //   let { car, house } = info
+    //   console.log(car, house)
+    // }
+
+    // 改良fn函数写法
+    // function fn({ car: { name, price }, house }) {
+    //   console.log(name, price, house)
+    // }
+
+    // fn(obj)
+
+
+    // function fn2([x, y, z]) {
+    //   console.log(x, y, z)
+    // }
+
+    // fn2([10, 20, 30])
+  </script>
+</body>
+
+</html>

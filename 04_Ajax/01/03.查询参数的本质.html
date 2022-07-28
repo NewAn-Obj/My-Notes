@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="./lib/axios.js"></script>
+  <script>
+    // =================================== 查询参数的本质 =================================== 
+    // 1. 查询参数会拼接到url地址后面，使用  ?  符号隔开
+    // 2. 查询参数的键和值之间使用  =    进行分隔
+    // 3. 并且多个查询参数之间使用  &   符号进行分隔
+
+
+
+    axios({
+      url: 'http://www.liulongbin.top:3009/api/getbooks',
+      method: 'get',
+
+      // params的查询参数，也可以直接这样书写url地址
+      // url: 'http://www.liulongbin.top:3009/api/getbooks?id=2&age=19',
+
+      // params 参数是用来指定查询条件
+      params: {
+        // 查询id为2的那一本书
+        id: 2,
+        age: 19,
+        bookname: '红楼梦'
+      }
+    }).then((res) => {
+      console.log(res)
+    })
+
+
+    // =================================== URL 编码处理 ===================================
+    //  了解即可 （axios 会自动帮我们处理好编码）
+    // encodeURI()  编码
+    // decodeURI()  解码
+
+    console.log(encodeURI('西游记')) // %E8%A5%BF%E6%B8%B8%E8%AE%B0
+    console.log(decodeURI('%E8%A5%BF%E6%B8%B8%E8%AE%B0'))
+  </script>
+</body>
+
+</html>

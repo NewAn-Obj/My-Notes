@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Document</title>
+  <!-- 导入样式表 -->
+  <link rel="stylesheet" href="./assets/news.css" />
+</head>
+
+<body>
+  <!-- 新闻列表 -->
+  <div id="news-list">
+    <!-- 新闻的 item 项 -->
+    <div class="news-item">
+      <img class="thumb" src="http://www.liulongbin.top:3009/images/5.webp" alt="" />
+      <div class="right-box">
+        <!-- 新闻标题 -->
+        <h1 class="title">5G商用在即，三大运营商营收持续下降</h1>
+        <div class="footer">
+          <div>
+            <!-- 新闻来源 -->
+            <span>胡润百富</span>&nbsp;&nbsp;
+            <!-- 发布日期 -->
+            <span>2019-10-28 10:14:38</span>
+          </div>
+          <!-- 评论数量 -->
+          <span>评论数：66</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 导入axios -->
+  <script src="./lib/axios.js"></script>
+  <script>
+    const list = document.querySelector('#news-list')
+
+    // 步骤:
+    // 1. 获取数据 ==> 通过 axios 发送GET请求
+    //           请求地址: http://www.liulongbin.top:3009/api/news
+    // 2. 渲染页面
+
+    axios({
+      url: 'http://www.liulongbin.top:3009/api/news',
+      method: 'get'
+    }).then(({ data: res }) => {
+      // {data: res} 解构出来data，并且重命名为res（这对应的就是服务器响应回来的数据）
+      // console.log(res)
+      // console.log(res.code)
+      // console.log(res.msg)
+      // console.log(res.data)
+
+      if (res.code === 200) {
+        // 获取成功了 ==> 遍历res.data 数组，将其展示到页面中
+        list.innerHTML = res.data.map(item => `
+          <div class="news-item">
+            <img class="thumb" src="http://www.liulongbin.top:3009${item.img}" alt="" />
+            <div class="right-box">
+              <!-- 新闻标题 -->
+              <h1 class="title">${item.title}</h1>
+              <div class="footer">
+                <div>
+                  <!-- 新闻来源 -->
+                  <span>${item.source}</span>&nbsp;&nbsp;
+                  <!-- 发布日期 -->
+                  <span>${item.time}</span>
+                </div>
+                <!-- 评论数量 -->
+                <span>评论数：${item.cmtcount}</span>
+              </div>
+            </div>
+          </div>
+        `).join('')
+      } else {
+        // 获取失败了
+        // alert('获取失败了')
+        alert(res.msg)
+      }
+    })
+  </script>
+</body>
+
+</html>

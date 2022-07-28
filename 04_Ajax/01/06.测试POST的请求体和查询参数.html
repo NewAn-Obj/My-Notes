@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="./lib/axios.js"></script>
+  <script>
+    // 测试地址:
+    //   GET请求: http://www.liulongbin.top:3009/api/get
+    //   POST请求: http://www.liulongbin.top:3009/api/post
+
+    // 注意：在浏览器中，GET 请求比较特殊：它只有查询参数，没有请求体
+
+    // get请求方式：数据写在 params（查询参数，数据放到了url地址后面）
+    // post请求方式：数据写在data（数据在请求体）
+
+    axios({
+      method: 'get',
+      url: 'http://www.liulongbin.top:3009/api/get',
+      params: {
+        a: 1,
+        b: 2
+      },
+
+      // 发送get请求，在data中传递数据，写了白写
+      data: {
+        c: 3,
+        d: 4
+      }
+    }).then(({ data: res }) => {
+      console.log(res)
+    })
+
+
+    // 注意点：
+    //  对于 axios 在使用的时候，method url data params 这些都是固定的配置，单词不能写错
+    //  对于params data里面写啥，具体看后面学习的接口文档
+    /* axios({
+      method: 'post',
+      url: 'http://www.liulongbin.top:3009/api/post',
+
+      // 查询参数
+      params: {
+        a: 1,
+        b: 2
+      },
+
+      // 1. 当请求方式为post的时候，既可以带params查询参数，也可以带data请求体数据
+      // 2. 当请求方式为get的时候，可以写params查询参数，不可以写data
+      data: {
+        c: 3,
+        d: 4
+      }
+    }).then(({ data: res }) => {
+      console.log(res)
+    }) */
+  </script>
+</body>
+
+</html>

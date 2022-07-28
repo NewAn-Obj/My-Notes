@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <ul id="box"></ul>
+
+    <script>
+        let box = document.querySelector('#box')
+
+        let arr = ['苹果', '榴莲', '梨子', '香蕉']
+
+        // 数组的map方法 映射得到新数组
+
+        // let arr2 = arr.map(item => `<li>${item}</li>`)
+        // console.log(arr2)
+        // ['<li>苹果</li>', '<li>榴莲</li>', '<li>梨子</li>', '<li>香蕉</li>']
+
+        // 可以get到这行代码的效果不？
+        // box.innerHTML = arr2.join('') // '<li>苹果</li><li>榴莲</li><li>梨子</li><li>香蕉</li>'
+
+        // 一步到位
+        // box.innerHTML = arr.map(item => `<li>${item}</li>`).join('')
+
+        // 完整写法
+        // box.innerHTML = arr.map((item) => {
+        //     return `<li>${item}</li>`
+        // }).join('')
+
+
+
+
+        // 数组变字符串 ==> join() 把数组的每一项拼接成字符串
+        // let arr3 = ['哈哈', '小明', '嘻嘻']
+        // console.log(arr3.join('-'))   // '哈哈-小明-嘻嘻'
+        // console.log(arr3.join('❤️'))   // '哈哈❤️小明❤️嘻嘻'
+        // console.log(arr3.join(''))   // '哈哈小明嘻嘻'
+    </script>
+</body>
+
+</html>

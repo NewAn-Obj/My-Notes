@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="btnPOST">新增数据</button>
+
+  <script src="./lib/axios.js"></script>
+  <script>
+    // =================================== 点击按钮 ,发送 post请求 ===================================
+    // 地址  http://www.liulongbin.top:3009/api/addbook
+    // 参数  bookname 书名、 author 作者、 publisher 出版社
+
+    document.querySelector('#btnPOST').addEventListener('click', function () {
+      axios({
+        method: 'post',
+        url: 'http://www.liulongbin.top:3009/api/addbook',
+        // params: 查询参数 ==> 适用于get方式的
+        data: {
+          // 发送给服务器的数据
+          bookname: '波哥历险记',
+          author: '霸哥',
+          publisher: '黑马出版社'
+        }
+      }).then(({ data: res }) => {
+        console.log(res) // 对应的是啥？服务器响应回来的数据
+      })
+    })
+  </script>
+</body>
+
+</html>

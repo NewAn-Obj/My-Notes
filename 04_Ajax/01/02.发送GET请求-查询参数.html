@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- 必须先导入 axios 的库文件，然后就可以调用 axios() 函数了 -->
+  <script src="./lib/axios.js"></script>
+
+  <script>
+    // =================================== 目标 ===================================
+    // 发起 GET 请求，获取指定id的图书数据 ==> params参数
+    // http://www.liulongbin.top:3009/api/getbooks
+    // 想指定查询的条件，可以通过 params 选项来指定查询的参数
+
+    axios({
+      url: 'http://www.liulongbin.top:3009/api/getbooks',
+      method: 'get',
+      // params 参数是用来指定查询条件
+      params: {
+        // 查询id为2的那一本书
+        id: 2,
+        // bookname: '红楼梦'
+      }
+    }).then((res) => {
+      console.log(res)
+    })
+  </script>
+</body>
+
+</html>
