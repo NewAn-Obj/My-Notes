@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/bootstrap.min.css" />
+  <link rel="stylesheet" href="./css/login.css" />
+</head>
+
+<body>
+  <div class="login-box">
+    <form>
+      <div class="form-group mb-3">
+        <label for="username">Account</label>
+        <!-- 账号 -->
+        <input type="text" class="form-control" name="username" id="username" autocomplete="off" />
+        <small id="emailHelp" class="form-text text-muted">The available account is <strong>admin</strong></small>
+      </div>
+      <div class="form-group mb-3">
+        <!-- 密码 -->
+        <label for="password">Password</label>
+        <input type="password" class="form-control" name="password" id="password" />
+        <small id="emailHelp" class="form-text text-muted">The available password is <strong>123456</strong></small>
+      </div>
+      <button type="submit" class="btn btn-primary" id="btnLogin">Submit</button>
+    </form>
+  </div>
+
+  <script src="./lib/axios.js"></script>
+  <script>
+    // 请求方式 POST
+    // 地址 http://www.liulongbin.top:3009/api/login
+    // 参数:  username 用户名     password  密码
+
+    // 使用Ajax提交表单数据的步骤
+    //  1. 监听表单的 submit 提交事件  ==> 当表单提交的时候会触发submit事件
+    //  2. 阻止默认提交行为     ==> e.preventDefault()
+    //  3. 基于 axios 发起请求
+    //  4. 指定请求方式、请求地址、指定请求体数据
+
+    // 1. 
+    document.querySelector('form').addEventListener('submit', function (e) {
+      // 2. 
+      e.preventDefault()
+
+      // 提交的时候，来获取
+      let username = document.querySelector('#username').value
+      let password = document.querySelector('#password').value
+
+      // 3. 
+      axios({
+        method: 'post',
+        url: 'http://www.liulongbin.top:3009/api/login',
+        data: {
+          username,
+          password
+        }
+      }).then(({ data: res }) => {
+        console.log(res)
+      })
+    })
+  </script>
+</body>
+
+</html>

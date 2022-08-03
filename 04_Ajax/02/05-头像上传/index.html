@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>案例-头像上传</title>
+  <link rel="stylesheet" href="./lib/bootstrap-v4.6.0.css">
+  <style>
+    .thumb-box {
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    .thumb {
+      width: 250px;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="thumb-box">
+    <!-- 头像 -->
+    <img src="./images/cover.jpg" class="img-thumbnail thumb" alt="">
+    <div class="mt-2">
+      <!-- 文件选择框 -->
+      <!-- accept 属性表示可选择的文件类型 -->
+      <!-- image/* 表示只允许选择图片类型的文件 -->
+      <input type="file" id="iptFile" accept="image/*" style="display: block;">
+      <!-- 选择头像图片的按钮 -->
+      <button class="btn btn-primary" id="btnChoose">选择 & 上传图片</button>
+    </div>
+  </div>
+  <script src="./lib/axios.js"></script>
+  <script>
+    // 在线接口文档：https://www.showdoc.com.cn/ajaxapi/3754974183518732
+
+    let btnChoose = document.querySelector('#btnChoose')
+    let iptFile = document.querySelector('#iptFile')
+    let img = document.querySelector('.thumb')
+
+    // 功能
+    //  1. 点击按钮，弹出文件选择框  ==> 模拟点击文件选择器，从而实现弹框来选择文件
+    //  2. 实现文件的上传功能
+
+    btnChoose.addEventListener('click', function () {
+      iptFile.click()
+    })
+
+    // FormData 存文件  ==> axios 发请求 (看接口文档)
+    iptFile.addEventListener('change', function () {
+      // 用户选择的文件，该如何拿到？
+      console.log(this.files[0])
+
+      // 当this.files[0] 是undefined的时候，表示用户未选中文件，以下代码不用执行
+      if (!this.files[0]) {
+        return // 阻止后续代码的执行
+      }
+
+      // FormData 构造函数 new一起使用
+      let fd = new FormData()
+      fd.append('avatar', this.files[0])
+
+      // axios 发请求代码
+      axios({
+        method: 'post',
+        // 请求的url地址一定要从接口文档中去复制
+        url: 'http://www.liulongbin.top:3006/api/upload/avatar',
+        // data的值是fd（把FormData存的数据给发送到服务器上）
+        data: fd
+      }).then(({ data: res }) => {
+        console.log(res)
+
+        // 更换图片（以下写法有问题，res.url 缺少根路径）
+        // img.src = res.url // error
+
+        img.src = `http://www.liulongbin.top:3006${res.url}`
+      })
+    })
+  </script>
+</body>
+
+</html>

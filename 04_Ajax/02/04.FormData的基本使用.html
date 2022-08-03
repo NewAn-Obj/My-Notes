@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="file" id="iptFile" accept="image/*">
+  <script>
+    let iptFile = document.querySelector('#iptFile')
+
+    // =========================== FormData的基本使用 ===========================
+
+    // FormData 是构造函数，new FormData得到其实例对象
+
+    let fd = new FormData() // 空的
+
+    // fd.append(键, 值) // 键 必须是字符串类型
+
+    fd.append('username', 'zs')
+    fd.append('age', 19)
+
+    // fd存选择好的文件数据
+
+    // 文件域有change事件（监听文件域的change事件），当选择的文件发生了改变就会触发change事件
+    iptFile.addEventListener('change', function () {
+      // console.log('change事件触发了，文件改变了')
+
+      // 如何去获取选择的文件 ==> FormData存文件
+      // 需要借助于文件域的files属性，这存在用户选择的文件
+      console.log(this.files)
+      // fd.append('photo', this.files[0])
+
+      // fd.forEach((value, key) => {
+      //   console.log(key, value)
+      // })
+    })
+
+    // 可以配合 forEach方法来遍历输出
+    //  第一个形参value 值，第二个形参key 键
+    // fd.forEach((value, key) => {
+    //   console.log(key, value)
+    // })
+  </script>
+</body>
+
+</html>
