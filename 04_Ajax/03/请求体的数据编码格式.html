@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <form>
+    <div>
+      <!-- 用户名 -->
+      <span>用户名：</span>
+      <input type="text" name="username">
+    </div>
+    <div>
+      <!-- 密码： -->
+      <span>登录密码：</span>
+      <input type="password" name="password">
+    </div>
+    <div>
+      <!-- 提交按钮 -->
+      <button>提交</button>
+    </div>
+  </form>
+  <script src="./lib/axios.js"></script>
+  <script src="./lib/form-serialize.js"></script>
+  <script>
+    // 请求体的数据编码格式不同，后端接收到的数据格式也会不同。
+    // 1. application/x-www-form-urlencoded     表单中不包含文件上传的场景，适用于普通数据的提交
+    // 2. application/json                      json数据传输
+    // 3. multipart/form-data                   在于能实现异步上传文件
+
+    // 接口地址: http://www.liulongbin.top:3009/api/form
+    // 请求方式: POST
+
+    document.querySelector('form').addEventListener('submit', function (e) {
+      e.preventDefault()
+
+      // 在提交的时候，来获取表单数据
+
+      // let data = serialize(this, { hash: true })
+      // hash: true 的配置的作用：表单数据是个js对象格式
+      // console.log(data) // {username: 'admo', password: 'qwddqwqwd'}
+
+      let data2 = serialize(this)
+
+      console.log(data2) // 表单数据是个字符串格式   
+      // username=qwdw&password=wqdwqdqwd   键值对的字符串 格式 键=值&键=值&键=值
+
+      axios({
+        method: 'post',
+        url: 'http://www.liulongbin.top:3009/api/form',
+        // data 请求体数据
+
+        // 以下写法，给服务器发送的数据是个json格式数据
+        //  对应的Content-type: application/json
+        // data: {
+        //   username: 'admo',
+        //   password: 'qwddqwqwd'
+        // }
+
+        // 以下写法，给服务器发送的数据是个键值对字符串格式的数据
+        //  对应的Content-type: application/x-www-form-urlencoded
+        // data: 'username=qwdw&password=wqdwqdqwd'
+
+        data: data2
+      }).then(({ data: res }) => {
+        console.log(res)
+      })
+    })
+  </script>
+</body>
+
+</html>

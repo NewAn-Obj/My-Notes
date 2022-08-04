@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // =========================== 目标: 使用xhr发起GET请求 ===========================
+    // 接口地址: http://www.liulongbin.top:3009/api/get
+    // 请求方式： get
+
+    // 步骤：
+    // 1.创建一个xhr对象
+    let xhr = new XMLHttpRequest()
+
+    // 2.设置请求方式和请求地址 xhr.open("请求方式", "请求地址")
+    xhr.open('get', 'http://www.liulongbin.top:3009/api/get?a=1&b=2&c=3')
+
+    // 3.发送请求
+    // xhr.send(请求体的数据)
+    // 因为get请求方式是没有请求体的，所以send的参数不写
+    xhr.send()
+
+    // 4.监听load(请求成功)事件 ==> 可以获取响应数据
+    xhr.addEventListener('load', function () {
+      console.log(xhr.response) // json字符串
+
+      // JSON.parse()
+      console.log(JSON.parse(xhr.response)) // js对象
+    })
+  </script>
+</body>
+
+</html>

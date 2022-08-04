@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="btnGET_1">GET不带参数</button>
+  <button id="btnGET_2">GET带参数</button>
+
+  <button id="btnPOST_1">POST不带请求体</button>
+  <button id="btnPOST_2">POST带请求体</button>
+
+  <script src="./lib/common.js"></script>
+  <script src="./lib/axios.js"></script>
+
+  <script>
+    // GET请求接口地址: http://www.liulongbin.top:3006/api/get
+    // POST请求接口地址: http://www.liulongbin.top:3006/api/post
+
+    // ======================== 配置全局请求的根路径 ======================== 
+    axios.defaults.baseURL = 'http://www.liulongbin.top:3006'
+
+    // axios的简写形式
+    // axios({
+    //   // 配置对象 method  url params data
+    // })
+
+    // axios.get(url, config) // config 配置对象 是可选的
+    //   axios.delete()  同 axios.get()
+
+    // axios.post(url, data, config) // data config 都是可选的    data 请求体数据
+    //    axios.put()  axios.patch()  同 axios.post()
+
+    // ======================== 发送get请求，不带参数 ======================== 
+    qs('#btnGET_1').addEventListener('click', function () {
+      axios.get('/api/get').then(({ data: res }) => {
+        console.log(res)
+      })
+    })
+
+    // ======================== 发送get请求，带参数 ======================== 
+    qs('#btnGET_2').addEventListener('click', function () {
+      axios.get('/api/get', {
+        // 配置对象
+        params: {
+          // 查询参数
+          a: 1,
+          b: 2
+        }
+      }).then(({ data: res }) => {
+        console.log(res)
+      })
+    })
+
+    // ======================== 发送post请求，不带参数 ======================== 
+    qs('#btnPOST_1').addEventListener('click', function () {
+      axios.post('/api/post').then(({ data: res }) => {
+        console.log(res)
+      })
+    })
+
+    // ======================== 发送post请求，带参数 ======================== 
+    qs('#btnPOST_2').addEventListener('click', function () {
+      axios.post('/api/post', {
+        // 这个对象是data，放请求体数据
+        username: 'lw',
+        age: 19
+      }, {
+        // 配置对象
+        timeout: 10000, // 超时时间
+        params: {
+          // 带查询参数
+          a: 1,
+          b: 2
+        },
+      }).then(({ data: res }) => {
+        console.log(res)
+      })
+    })
+  </script>
+</body>
+
+</html>
