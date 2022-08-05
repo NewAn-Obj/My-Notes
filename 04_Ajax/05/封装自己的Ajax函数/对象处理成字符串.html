@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        let params = {
+            a: 1,
+            b: 2,
+            c: 3
+        }
+
+        // 需求：将params对象的键值对处理成  键值对的字符串   'a=1&b=2&c=3'
+
+        // 拆解
+        //  1. 对象  ==>  数组  ['a=1', 'b=2', 'c=3']
+        //  2. 把上面的数组变字符串   ['a=1', 'b=2', 'c=3'].join('&')  结果是 'a=1&b=2&c=3'
+
+        // 步骤:
+        //  1. 准备好一个空数组  []
+        //  2. for...in 遍历对象  把对象中的键 和 值 添加到数组中    难度😫
+        //  3. 数组使用join
+
+        // 1. 
+        let arr = []
+
+        // 2. 
+        for (let key in params) {
+            console.log(key, params[key])
+
+            // arr.push(`a=1`)  // ['a=1', 'a=1', 'a=1']
+
+            // 把键和值给push添加到arr数组中
+            arr.push(`${key}=${params[key]}`)
+        }
+
+        console.log(arr)  // ['a=1', 'b=2', 'c=3']
+        console.log(arr.join('&')) // 'a=1&b=2&c=3'
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="btnGet">发送get请求</button>
+  <button id="btnPost">发送post请求</button>
+
+  <script>
+    //  GET   http://www.liulongbin.top:3009/api/get
+    //  POST  http://www.liulongbin.top:3009/api/post
+
+
+    // 提供myAxios来实现发送ajax请求   ajax 异步操作  ==>   需要使用promise来封装ajax异步代码
+    function myAxios({ method, url, params, data }) {
+      // 记得将promise实例对象给返回出去
+      return new Promise((resolve, reject) => {
+        // 在这写ajax异步代码
+        // ....
+        // console.log(method, url, params, data)
+
+        // 发送请求 + 处理响应
+        // 原生xhr
+        // 1. 创建出来xhr对象
+        // 2. 方式、url地址 ==> open()
+        // 3. send(请求体数据) 发送请求
+
+        // 1. 
+        let xhr = new XMLHttpRequest()
+
+        // 2. 
+        xhr.open(method, url)
+
+        // 3. 
+        xhr.send()
+
+        // 处理响应
+        xhr.addEventListener('load', function () {
+          // console.log(xhr.response) // 服务器响应结果
+
+          // 把promise实例对象的状态改成成功fulfilled
+          resolve(JSON.parse(xhr.response)) // 把服务器响应的json字符串数据给反序列化下
+        })
+
+        // 监听 error 事件 处理请求失败
+        xhr.addEventListener('error', function () {
+          reject('网络异常，请求失败，请稍后重试~~~')
+        })
+      })
+    }
+
+
+    // 发送get请求
+    document.querySelector('#btnGet').addEventListener('click', function () {
+      // 使用自己封装的ajax函数来发送请求
+      myAxios({
+        method: 'get',
+        url: 'http://www.liulongbin.top:3009/api/get',
+        params: {
+          name: 'lw',
+          age: 19
+        }
+      }).then((res) => {
+        console.log(res) // 服务器响应结果  js对象 方便去操作
+      }).catch((err) => {
+        alert(err)
+      })
+    })
+
+    // 发送post请求
+    document.querySelector('#btnPost').addEventListener('click', function () {
+      // 使用自己封装的ajax函数来发送请求
+      myAxios({
+        method: 'post',
+        url: 'http://www.liulongbin.top:3009/api/post',
+        params: {
+          name: 'lw',
+          age: 19
+        },
+        data: {
+          a: 1,
+          b: 2
+        }
+      }).then((res) => {
+        console.log(res) // 服务器响应结果
+      })
+    })
+  </script>
+</body>
+
+</html>

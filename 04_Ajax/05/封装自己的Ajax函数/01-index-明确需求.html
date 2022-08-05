@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="btnGet">发送get请求</button>
+  <button id="btnPost">发送post请求</button>
+
+  <script>
+    //  GET   http://www.liulongbin.top:3009/api/get
+    //  POST  http://www.liulongbin.top:3009/api/post
+
+
+    // 提供myAxios来实现发送ajax请求   ajax 异步操作  ==>   需要使用promise来封装ajax异步代码
+    function myAxios({ method, url, params, data }) {
+      // 记得将promise实例对象给返回出去
+      return new Promise((resolve, reject) => {
+        // 在这写ajax异步代码
+        // ....
+        console.log(method, url, params, data)
+      })
+    }
+
+
+    // 发送get请求
+    document.querySelector('#btnGet').addEventListener('click', function () {
+      // 使用自己封装的ajax函数来发送请求
+      myAxios({
+        method: 'get',
+        url: 'http://www.liulongbin.top:3009/api/get',
+        params: {
+          name: 'lw',
+          age: 19
+        }
+      }).then((res) => {
+        console.log(res) // 服务器响应结果
+      })
+    })
+
+    // 发送post请求
+    document.querySelector('#btnPost').addEventListener('click', function () {
+      // 使用自己封装的ajax函数来发送请求
+      myAxios({
+        method: 'post',
+        url: 'http://www.liulongbin.top:3009/api/post',
+        params: {
+          name: 'lw',
+          age: 19
+        },
+        data: {
+          a: 1,
+          b: 2
+        }
+      }).then((res) => {
+        console.log(res) // 服务器响应结果
+      })
+    })
+  </script>
+</body>
+
+</html>

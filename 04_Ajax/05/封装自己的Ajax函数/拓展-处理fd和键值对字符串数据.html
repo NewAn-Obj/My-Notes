@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button id="btnGet">发送get请求</button>
+  <button id="btnPost">发送post请求</button>
+  <button id="btnPost2">发送FormData请求</button>
+  <button id="btnPost3">发送键值对字符串请求</button>
+
+  <script>
+    //  GET   http://www.liulongbin.top:3009/api/get
+    //  POST  http://www.liulongbin.top:3009/api/post
+
+
+    // 提供myAxios来实现发送ajax请求   ajax 异步操作  ==>   需要使用promise来封装ajax异步代码
+    // 给method 设置默认值为get，这样method没有指定的时候，默认发get请求
+    function myAxios({ method = 'get', url, params, data }) {
+      // 记得将promise实例对象给返回出去
+      return new Promise((resolve, reject) => {
+        // 在这写ajax异步代码
+        // ....
+        // console.log(method, url, params, data)
+
+        // 发送请求 + 处理响应
+        // 原生xhr
+        // 1. 创建出来xhr对象
+        // 2. 方式、url地址 ==> open()
+        // 3. send(请求体数据) 发送请求
+
+        // 1. 
+        let xhr = new XMLHttpRequest()
+
+        // 在open之前，对params查询参数做个处理
+        // console.log(params)
+        if (params) {
+          // if成立，表示params对象是存在的
+          // console.log('if成立，表示params对象是存在的，才有必要把params对象处理成键值对字符串，放到url地址后面')
+
+          let arr = []
+
+          for (let k in params) {
+            arr.push(`${k}=${params[k]}`)
+          }
+          // console.log(arr.join('&')) // name=lw&age=19
+
+          // 把键值对字符串拼接到url地址后面，并使用 ? 隔开
+          url += `?${arr.join('&')}` // url = url + ?name=lw&age=19
+        }
+
+        // 2. 
+        xhr.open(method, url)
+
+        // 3. 
+        // xhr.send(请求体数据)
+
+        // 字符串有对应方法实现转大小写
+        // 'GeT'.toLowerCase()    'get'.toUpperCase()
+        if (method.toLowerCase() === 'get') {
+          // 以下代码适用于get方式 ==> 没有请求体
+          // console.log('这是get请求方式')
+          xhr.send()
+        } else {
+          // 需要判断，请求方式不为get的话，而且有data请求体数据的话，就来处理data数据
+          // post put ... 方式
+          if (data) {
+            if (data instanceof FormData) {
+              // if成立，说明请求体的数据为FormData格式数据 
+              xhr.send(data)
+            } else if (typeof data === 'object') {
+              // if成立，说明请求体的数据为js对象，但是在发送的时候，需要将其处理成json字符串
+              xhr.setRequestHeader('Content-Type', 'application/json')
+              xhr.send(JSON.stringify(data))
+            } else if (typeof data === 'string') {
+              // if成立，说明请求体的数据为键值的字符串  
+              xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+              xhr.send(data)
+            }
+          }
+        }
+
+        // 处理响应
+        xhr.addEventListener('load', function () {
+          // console.log(xhr.response) // 服务器响应结果
+
+          // 把promise实例对象的状态改成成功fulfilled
+          resolve(JSON.parse(xhr.response)) // 把服务器响应的json字符串数据给反序列化下
+        })
+
+        // 监听 error 事件 处理请求失败
+        xhr.addEventListener('error', function () {
+          reject('网络异常，请求失败，请稍后重试~~~')
+        })
+      })
+    }
+
+
+    // 发送get请求
+    document.querySelector('#btnGet').addEventListener('click', function () {
+      // 使用自己封装的ajax函数来发送请求
+      myAxios({
+        // method: 'gEt',
+        url: 'http://www.liulongbin.top:3009/api/get',
+        params: {
+          name: 'lw',
+          age: 19
+        }
+      }).then((res) => {
+        console.log(res) // 服务器响应结果  js对象 方便去操作
+      }).catch((err) => {
+        alert(err)
+      })
+    })
+
+    // 发送post请求
+    document.querySelector('#btnPost').addEventListener('click', function () {
+      // 使用自己封装的ajax函数来发送请求
+      myAxios({
+        method: 'post',
+        url: 'http://www.liulongbin.top:3009/api/post',
+        params: {
+          name: 'lw',
+          age: 19
+        },
+        data: {
+          a: 1,
+          b: 2
+        }
+      }).then((res) => {
+        console.log(res) // 服务器响应结果
+      })
+    })
+
+    document.querySelector('#btnPost2').addEventListener('click', function () {
+      let fd = new FormData()
+      fd.append('car', 'bmw')
+      fd.append('money', 190)
+
+      // 使用自己封装的ajax函数来发送请求
+      myAxios({
+        method: 'post',
+        url: 'http://www.liulongbin.top:3009/api/post',
+        params: {
+          name: 'lw',
+          age: 19
+        },
+        data: fd, // 是FormData格式的数据
+      }).then((res) => {
+        console.log(res) // 服务器响应结果
+      })
+    })
+
+    document.querySelector('#btnPost3').addEventListener('click', function () {
+      // 使用自己封装的ajax函数来发送请求
+      myAxios({
+        method: 'post',
+        url: 'http://www.liulongbin.top:3009/api/post',
+        params: {
+          name: 'lw',
+          age: 19
+        },
+        data: 'a=1&b=2', // 键值对字符串 
+      }).then((res) => {
+        console.log(res) // 服务器响应结果
+      })
+    })
+  </script>
+</body>
+
+</html>
