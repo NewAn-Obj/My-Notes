@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // =========================== 回调地狱 ===========================
+
+        // 需求：延时2s秒输出红色，在延时1s输出黄色，之后在延时3s输出绿色
+        // 回调函数的嵌套 ==> 回调地狱
+
+        setTimeout(function () {
+            console.log('is red')
+
+            // 在开启延时器
+            setTimeout(() => {
+                console.log('is yeelow')
+
+                setTimeout(() => {
+                    console.log('is green')
+
+                    setTimeout(function () {
+                        console.log('is ok1')
+
+                        // 在开启延时器
+                        setTimeout(() => {
+                            console.log('is ok2')
+
+                            setTimeout(() => {
+                                console.log('is ok3')
+
+
+                            }, 3000)
+
+                        }, 1000)
+
+                    }, 2000)
+
+
+                }, 3000)
+
+            }, 1000)
+
+        }, 2000)
+    </script>
+</body>
+
+</html>

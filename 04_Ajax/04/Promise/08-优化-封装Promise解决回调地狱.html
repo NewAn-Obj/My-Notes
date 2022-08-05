@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // =========================== 优化Promise解决回调地狱 ===========================
+        // 将创建 promise 对象的过程，封装到一个函数中，需要promise对象，调函数即可
+
+        function fn(color, time) {
+            // color 就是成功的结果
+            // time  延时时间
+
+            // 记得将创建的promise实例对象给返回出去
+            return new Promise((resolve, reject) => {
+                setTimeout(function () {
+                    resolve(color) // 状态 fulfilled 成功
+                }, time)
+            })
+        }
+
+        fn('is red', 2000)
+            .then((res) => {
+                console.log(res) // is red
+
+                // return 新的promise 实例对象
+                return fn('is yellow', 1000)
+            })
+            .then((res) => {
+                console.log(res) // is yellow
+
+                // return 新的promise 实例对象
+                return fn('is green', 3000)
+            })
+            .then((res) => {
+                console.log(res) // is green
+
+                return fn('is ok1', 2000)
+            })
+            .then((res) => {
+                console.log(res) // is ok1
+
+                return fn('is ok2', 1000)
+            })
+            .then((res) => {
+                console.log(res) // is ok2
+
+                return fn('is ok3', 3000)
+            })
+            .then((res) => {
+                console.log(res) // is ok3
+
+            })
+
+    </script>
+</body>
+
+</html>

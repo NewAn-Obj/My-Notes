@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // =========================== Promise 介绍 =========================== 
+    //  把异步代码封装写入到Promise中
+    //  Promise 单词本身 承诺 许诺  （我承诺等我年薪百万的时候，我就回来娶你！！！）
+    //  Promise 三种状态
+    //    1. pending     进行中
+    //    2. fulfilled   成功（已完成）
+    //    3. rejected    失败（未完成）
+
+
+    // =========================== Promise 基本语法 ===========================
+    // 步骤
+    //  1. 许下诺言
+    //  2. 获取诺言的结果
+
+    // 1.  许下诺言
+    //  Promise 是个构造函数，new Promise创建了实例对象 ==> 许了一个诺言
+    let p = new Promise((resolve, reject) => {
+      // 参数是个函数，把异步操作封装写入到该函数里面
+
+      console.log('我小明许下诺言。等我年薪百万的时候，就回来娶小红妹妹~~~')
+
+      // 参数resolve, reject都是函数
+
+      // 许诺成功
+      // 当调用 resolve()，会把promise状态变成 fulfilled，成功（已完成）
+      // resolve('年薪千万')
+
+      // 许诺失败
+      // 调用 reject(),会把promise状态变成 rejected， 失败（未完成）
+      reject('搞钱太难')
+    })
+    console.log(p)
+
+
+    // 2. 获取诺言的结果
+    //  then 和 catch方法获取诺言成功、失败的结果
+
+    p.then((res) => {
+      // then方法会在诺言成功的时候来执行
+      //  形参res对应的就是诺言成功的结果
+      console.log(res, '我小红今晚做你美丽的新娘')
+    }).catch((err) => {
+      // catch方法会在诺言失败的时候来执行
+      // 形参err 对应的是诺言失败的结果
+      console.log(err)
+    })
+  </script>
+</body>
+
+</html>

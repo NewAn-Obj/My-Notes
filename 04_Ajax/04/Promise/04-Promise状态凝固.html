@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // =========================== 演示 promise 的状态是凝固的 ===========================
+    // 一旦当promise状态发生改变，状态就会被凝固
+
+    let p = new Promise((resolve, reject) => {
+      console.log('许诺了')
+
+
+      resolve('许诺成功啦') // fulfilled
+
+      // 后面在修改状态，是没有用的
+      reject('许诺失败了')  // rejected
+    })
+
+    console.log(p) // fulfilled
+  </script>
+</body>
+
+</html>

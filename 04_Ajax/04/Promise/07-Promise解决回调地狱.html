@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // =========================== Promise解决回调地狱 ===========================
+        // setTimeout(function () {
+        //     console.log('is red')
+
+        //     // 在开启延时器
+        //     setTimeout(() => {
+        //         console.log('is yeelow')
+
+        //         setTimeout(() => {
+        //             console.log('is green')
+
+
+        //         }, 3000)
+
+        //     }, 1000)
+
+        // }, 2000)
+
+
+        new Promise((resolve, reject) => {
+            setTimeout(function () {
+                resolve('is red') // 状态 fulfilled 成功  成功结果 is red
+            }, 2000)
+        }).then((res) => {
+            console.log(res) // is red
+
+            // return 新的promise 实例对象
+            return new Promise((resolve, reject) => {
+                setTimeout(function () {
+                    resolve('is yellow') // 状态 fulfilled 成功  成功结果 is yellow
+                }, 1000)
+            })
+        }).then((res) => {
+            console.log(res) // is yellow
+
+            // return 新的promise 实例对象
+            return new Promise((resolve, reject) => {
+                setTimeout(function () {
+                    resolve('is green') // 状态 fulfilled 成功  成功结果 is green
+                }, 3000)
+            })
+        }).then((res) => {
+            console.log(res)
+        })
+    </script>
+</body>
+
+</html>

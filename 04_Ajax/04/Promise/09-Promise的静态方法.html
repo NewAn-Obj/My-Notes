@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="../lib/axios.js"></script>
+  <script>
+    // =========================== Promise的静态方法 ===========================
+
+    // Promise.all([promise1, promise2, ... ]).then(... )
+    //  参数是个数组，数组的每一项是promise对象，可以有若干个
+    // 会等待所有的异步操作都完成，才会走.then
+
+    // Promise.race([promise1, promise2, ... ]).then(... )
+    // 只要任何一个异步操作完成，就会走.then
+
+
+
+
+
+    // 演示
+    // 获取图书接口       axios.get('/api/getbooks')
+    // 获取新闻接口       axios.get('/api/news')
+    // 测试get请求接口    axios.get('/api/get')
+
+    // 设置接口的根路径
+    axios.defaults.baseURL = 'http://www.liulongbin.top:3006'
+
+
+    // console.log(axios.get('/api/getbooks')) // promise实例对象
+    // console.log(axios({})) // promise对象
+    // console.log(axios.post()) // promise对象
+
+    // axios.get('/api/getbooks').then(({ data: res }) => { })
+
+    Promise.all([axios.get('/api/getbooks1232111'), axios.get('/api/news'), axios.get('/api/get')]).then((res) => {
+      console.log(res) // 数组，里面每一项是axios请求成功的结果
+    }).catch((err) => {
+      // 只要有一个promise对象失败了，走到catch这
+      console.log('在catch了', err)
+    })
+
+    // Promise.race([axios.get('/api/getbooks'), axios.get('/api/news'), axios.get('/api/get')]).then((res) => {
+    //   console.log(res) // 最先成功的结果（不是固定的）
+    // })
+  </script>
+</body>
+
+</html>
