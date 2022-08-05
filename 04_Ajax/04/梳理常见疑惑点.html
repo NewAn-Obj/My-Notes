@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/login.css" />
+</head>
+
+<body>
+    <div class="login-box">
+        <form>
+            <div class="form-group mb-3">
+                <label for="username">Account</label>
+                <!-- 账号 -->
+                <input type="text" class="form-control" name="username" id="username" autocomplete="off" />
+                <small id="emailHelp" class="form-text text-muted">The available account is
+                    <strong>admin</strong></small>
+            </div>
+            <div class="form-group mb-3">
+                <!-- 密码 -->
+                <label for="password">Password</label>
+                <input type="password" class="form-control" name="password" id="password" />
+                <small id="emailHelp" class="form-text text-muted">The available password is
+                    <strong>123456</strong></small>
+            </div>
+            <button type="submit" class="btn btn-primary" id="btnLogin">Submit</button>
+        </form>
+    </div>
+    <script src="./lib/axios.js"></script>
+    <script src="./lib/form-serialize.js"></script>
+    <script>
+        // 请求体的数据编码格式不同，后端接收到的数据格式也会不同。
+        // 1. application/x-www-form-urlencoded     表单中不包含文件上传的场景，适用于普通数据的提交
+        // 2. application/json                      json数据传输
+        // 3. multipart/form-data                   在于能实现异步上传文件
+
+        // 接口地址: http://www.liulongbin.top:3009/api/form
+        // 请求方式: POST
+
+        document.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault()
+
+            // let data = serialize(this)
+            // console.log(data) // 键值对字符串  username=admin&password=123456
+
+
+            let data = serialize(this, { hash: true })
+            console.log(data)   // js对象     {username: 'admin', password: '123456'}
+        })
+
+
+        let fd = new FormData()
+        fd.append('username', 'lw')
+
+        // axios 发送请求
+        axios({
+            method: 'post',
+            url: 'http://www.liulongbin.top:3009/api/form',
+            // params 查询参数
+            params: {
+                a: 1,
+                b: 2
+            },
+
+            // 请求体数据  
+            // 注意： data的值必须是有{}，这是错误的认知
+            //  data的值是js对象，axios 发送请求体数据的时候，发送的是json格式数据
+            //  看请求报文里面的Content-Type的值  application/json
+            // data: {
+            //     c: 3,
+            //     d: 4
+            // }
+
+            // 键值对字符串格式   键=值&键=值
+            // data的值是键值对字符串格式，对应的Content-Type的值 application/x-www-form-urlencoded 
+            // data: 'c=3&d=4'
+
+            // data请求体数据是FormData格式数据, 对应的Content-Type的值 multipart/form-data
+            data: fd
+        }).then(({ data: res }) => {
+            console.log(res)
+        })
+    </script>
+</body>
+
+</html>

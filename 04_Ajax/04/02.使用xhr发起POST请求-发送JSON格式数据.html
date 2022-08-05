@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    /*
+       目标: 使用xhr发起POST请求 
+             接口地址: http://www.liulongbin.top:3009/api/post
+             请求体数据格式为JSON数据
+    */
+
+    // js对象  ==> json数据 ==> 发给服务器
+    let obj = {
+      name: 'zs',
+      age: 20
+    }
+
+    // 1. 创建一个xhr对象
+    let xhr = new XMLHttpRequest()
+
+    // 2. 设置请求方式和请求地址
+    xhr.open('post', 'http://www.liulongbin.top:3009/api/post')
+
+
+    // 3. 设置请求头 中 请求体数据的编码格式
+    xhr.setRequestHeader('Content-Type', 'application/json')
+
+    // 4. 发送请求
+    //  需要自己来处理（把js对象处理成json数据，在发给服务器）
+    xhr.send(JSON.stringify(obj))
+
+    // 5. 监听load(请求成功)事件
+    xhr.addEventListener('load', function () {
+      console.log(xhr.response) // json数据 字符串     转成  js数据
+
+      // 反序列化
+      console.log(JSON.parse(xhr.response))
+    })
+  </script>
+</body>
+
+</html>
