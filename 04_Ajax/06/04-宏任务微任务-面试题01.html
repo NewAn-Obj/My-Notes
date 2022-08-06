@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="./lib/axios.js"></script>
+  <script>
+    // 宏任务：
+    //  整个script标签代码
+    //  定时器 延时器
+    //  ajax代码
+
+    // 微任务
+    //  promise对象的then catch 代码
+
+    // 宏任务 微任务 如何执行的
+    //  1. 先执行宏任务
+    //  2. 当宏任务执行结束了，在执行所有的微任务（如果没有微任务，就不需要执行）
+    //  3. 继续执行下一个宏任务了
+
+
+    // 解答以下代码的结果
+    // axios.get('http://www.liulongbin.top:3006/api/getbooks').then((res) => {
+    //   console.log(res)
+    // })
+
+    // setTimeout(() => {
+    //   console.log('延时器代码')
+    // }, 1000)
+
+
+    // 面试题
+    // console.log(1)
+
+    // setTimeout(function () {
+    //   console.log(2)
+    // }, 0)
+
+    // const p = new Promise((resolve, reject) => {
+    //   resolve(1000) // resolve() 表示诺言成功，1000成功的结果
+    // })
+
+    // p.then(data => {
+    //   console.log(data)
+    // })
+
+    // console.log(3)
+  </script>
+</body>
+
+</html>

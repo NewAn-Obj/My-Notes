@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // 原题
+    const p1 = () =>
+      new Promise((resolve, reject) => {
+        console.log(1)
+        let p2 = new Promise((resolve, reject) => {
+          console.log(2)
+          setTimeout(() => {
+            console.log(3)
+            resolve(4)
+          }, 0)
+          resolve(5)
+        })
+        resolve(6)
+        p2.then((arg) => {
+          console.log(arg)
+        })
+      })
+
+    setTimeout(() => {
+      console.log(8)
+      const p3 = new Promise((reject) => {
+        reject(9)
+      }).then((res) => {
+        console.log(res)
+      })
+    }, 0)
+
+    p1().then((arg) => {
+      console.log(arg)
+    })
+
+    console.log(10)
+
+
+    // 分析的
+    // p1 是箭头函数，返回了promise实例对象
+    // const p1 = () => {
+    //   return new Promise((resolve, reject) => {
+    //     console.log(1)
+
+    //     let p2 = new Promise((resolve, reject) => {
+    //       console.log(2)
+
+    //       setTimeout(() => {
+    //         console.log(3)
+
+    //         // 由于 resolve(5) 代码已经将p2的promise对象状态为成功
+    //         // 无效
+    //         resolve(4)
+    //       }, 0)
+
+    //       // 这一行代码，把p2这个promise对象的状态变成成功
+    //       // 状态凝固
+    //       //  5 成功结果
+    //       resolve(5)
+    //     })
+
+    //     resolve(6)
+
+    //     p2.then((arg) => {
+    //       console.log(arg)
+    //     })
+    //   })
+    // }
+
+    // setTimeout(() => {
+    //   console.log(8)
+    //   // 第一个参数是resolve
+    //   // 第二个参数是reject
+    //   // reject参数其实本质是resolve
+    //   const p3 = new Promise((resolve) => {
+    //     resolve(9)
+    //   }).then((res) => {
+    //     console.log(res)
+    //   })
+    // }, 0)
+
+    // p1().then((arg) => {
+    //   console.log(arg)
+    // })
+
+    // console.log(10)
+  </script>
+</body>
+
+</html>
