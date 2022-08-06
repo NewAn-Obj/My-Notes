@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/index.css" />
+</head>
+
+<body>
+  <div class="container">
+    <ul class="top">
+      <!-- <li>
+        <a href="javascript:;">首页</a>
+        <ul class="sub">
+          <li>
+            <a href="javascript:;">
+              <span>砂锅厨具</span>
+              <img src="https://yanxuan.nosdn.127.net/3102b963e7a3c74b9d2ae90e4380da65.png?quality=95&imageView" alt="">
+            </a>
+          </li>
+        </ul>
+      </li> -->
+    </ul>
+  </div>
+  <!-- 导入自己封装的axios函数 -->
+  <script src="./myAxios.js"></script>
+
+  <script>
+    // 在线接口文档： https://www.showdoc.com.cn/1834761734600444/8477922262544492
+
+    let box = document.querySelector('.top')
+
+    // 请求根路径为 http://ajax-api.itheima.net
+
+
+    // myAxios()  使用自己封装的myAxios函数来发送请求 去获取一级 + 二级导航数据
+
+    // 得到的结果是一级目录
+    myAxios({
+      // method: 'get',
+      url: 'http://ajax-api.itheima.net/api/category/top'
+    }).then((res) => {
+      console.log(res)
+
+      // 继续发送请求，获取二级导航数据（发送ajax请求）
+      // 遍历res.data数组
+      // map 可以遍历数组，还可以映射得到新数组
+      let arr = res.data.map(item => {
+        // console.log(item.id) // 顶级导航分类id
+        return myAxios({
+          url: 'http://ajax-api.itheima.net/api/category/sub',
+          params: {
+            id: item.id
+          }
+        })
+      })
+      console.log(arr) // [promise实例对象,.....]
+
+      // 数组arr 里面的每一项是promise对象 , 需要去获取所有的promise对象成功的结果 ==> 就是获取到了所有的二级导航数据
+      // Promise.all(arr).then((res) => {  })  // 不要这样写
+
+      // return 新的promise对象
+      return Promise.all(arr)
+    }).then((res) => {
+      console.log(res) // 数组，数组里面是每一个promise对象成功的结果
+    })
+  </script>
+</body>
+
+</html>
