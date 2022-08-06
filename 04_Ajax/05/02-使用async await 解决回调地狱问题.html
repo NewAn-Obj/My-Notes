@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // 使用 async await 解决回调地狱问题
+
+        function fn(color, time) {
+            // color 就是成功的结果
+            // time  延时时间
+            // 记得将创建的promise实例对象给返回出去
+            return new Promise((resolve, reject) => {
+                setTimeout(function () {
+                    resolve(color) // 状态 fulfilled 成功
+                }, time)
+            })
+        }
+
+
+        // fn('is red', 2000)
+        //     .then((res) => {
+        //         console.log(res) // is red
+
+        //         // return 新的promise 实例对象
+        //         return fn('is yellow', 1000)
+        //     })
+        //     .then((res) => {
+        //         console.log(res) // is yellow
+
+        //         // return 新的promise 实例对象
+        //         return fn('is green', 3000)
+        //     })
+        //     .then((res) => {
+        //         console.log(res) // is green
+        //     })
+
+
+        // 使用 async await 来改写
+        // async function demo() {
+        //     let color1 = await fn('is red', 2000)
+        //     console.log(color1) // is red
+
+        //     let color2 = await fn('is yellow', 1000)
+        //     console.log(color2)
+
+        //     let color3 = await fn('is green', 3000)
+        //     console.log(color3)
+        // }
+        // demo()  // async 函数记得要调用，否则函数里面不执行
+
+
+        // 立即执行函数  优化以上代码
+        ; (async () => {
+            let color1 = await fn('is red', 2000)
+            console.log(color1) // is red
+
+            let color2 = await fn('is yellow', 1000)
+            console.log(color2)
+
+            let color3 = await fn('is green', 3000)
+            console.log(color3)
+        })()
+    </script>
+</body>
+
+</html>

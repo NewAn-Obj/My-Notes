@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="./lib/axios.js"></script>
+    <script>
+        // async await基本使用
+        //  异步终极解决方案：async  await
+        //  是一对关键字，需要配合使用
+
+
+        // ============================== 核心 ==============================
+        // 1. async用于修饰一个函数, 表示一个函数是异步的
+        //     如果async函数内没有await, 那么async没有意义的, 全是同步的内容
+        //     只有遇到了await开始往下, 才是异步的开始
+        // 2. await 要用在 async 函数中
+        // 3. await 后面一般会跟一个promise对象,  await会阻塞async函数的执行,
+        //     直到等到 promise成功的结果(resolve的结果)
+        // 4. await 只会等待 promise 成功的结果, 如果失败了会报错, 需要 try catch
+
+
+        // ============================== 核心1 ==============================
+        // 1. async用于修饰一个函数, 表示一个函数是异步的
+        //     如果async函数内没有await, 那么async没有意义的, 全是同步的内容
+        //     只有遇到了await开始往下, 才是异步的开始
+
+        // async function fn() {
+        //     let num = await 1 + 10 // await 后面如果是表达式 ，await的结果就是该表达式的值
+        //     console.log(num)  // 11
+        // }
+        // fn()
+        // console.log(2)
+
+
+        // ============================== 核心2 ==============================
+        // await 要用在 async 函数中
+
+        // function fn() {
+        //     // error: await is only valid in async functions
+        //     let num = await 1 + 10
+        //     console.log(num)  // 11
+        // }
+        // fn()
+        // console.log(2)
+
+
+        // ============================== 核心3 ==============================
+        // await 后面一般会跟一个promise对象,  await会阻塞async函数的执行,
+        //     直到等到 promise成功的结果(resolve的结果)
+
+        // axios.get('http://www.liulongbin.top:3006/api/getbooks')
+        // axios.get('http://www.liulongbin.top:3006/api/getbooks').then(({data: res}) => {})
+
+        // async function fn() {
+        //     let { data: res } = await axios.get('http://www.liulongbin.top:3006/api/getbooks')
+        //     console.log(res) // axios请求成功的结果（图书）
+
+        //     // 获取新闻列表数据
+        //     let { data: resNews } = await axios.get('http://www.liulongbin.top:3006/api/news')
+        //     console.log(resNews) // axios请求成功的结果（新闻）
+        // }
+        // fn()
+
+
+
+        // ============================== 核心4 ==============================
+        //   await 只会等待 promise 成功的结果, 如果失败了会报错, 需要 try catch
+
+        // try catch 语法
+        // try{
+        //     // 放可以会出错的代码
+        // }catch(e){
+        //     // 一旦try中的代码报错了，会被catch捕获到，其中参数e就是错误消息
+        // }
+
+        async function fn() {
+
+            try {
+                let { data: res } = await axios.get('http://www.liulongbin.top:3006/api/getbooks')
+                console.log(res) // axios请求成功的结果（图书）
+            } catch (e) {
+                console.log(e) // 错误消息
+                alert('获取失败，请稍后重试~~~')
+            }
+        }
+        fn()
+    </script>
+</body>
+
+</html>
