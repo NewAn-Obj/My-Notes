@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="./css/bootstrap.min.css" />
+  <style>
+    .form-select {
+      width: 103px;
+      display: inline-block;
+    }
+
+    .col-form-label {
+      text-align: right;
+    }
+
+    .figure-img {
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+    }
+
+    #upload {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="p-5">个人设置</h1>
+    <form class="col-6">
+      <div class="row mb-3">
+        <label class="col-form-label col-3">昵称：</label>
+        <div class="col-9">
+          <input class="form-control col-9" type="text" name="nickname" />
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label class="col-form-label col-3">籍贯：</label>
+        <div class="col-9">
+          <select class="form-select col-4" name="province">
+            <option value="">--省--</option>
+          </select>
+          <select class="form-select col-4" name="city">
+            <option value="">--市--</option>
+          </select>
+          <select class="form-select col-4" name="area">
+            <option value="">--区--</option>
+          </select>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label class="col-form-label col-3">头像：</label>
+        <div class="col-9">
+          <input class="form-control col-9" type="hidden" name="avatar" />
+          <figure class="figure">
+            <input type="file" id="upload" />
+            <img src="https://yanxuan-item.nosdn.127.net/12a882699bd531a1bd428bffe1989525.jpg"
+              class="figure-img img-fluid rounded" alt="..." />
+            <figcaption class="figure-caption">修改头像</figcaption>
+          </figure>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <label class="col-3"></label>
+        <div class="col-9">
+          <button class="btn btn-primary">保存</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script src="./lib/bootstrap.min.js"></script>
+  <script src="./lib/axios.js"></script>
+  <script src="./lib/form-serialize.js"></script>
+  <script>
+    // 在线接口文档：https://www.showdoc.com.cn/1834761734600444/8477923164668939
+
+    // 配置请求根路径
+    axios.defaults.baseURL = 'http://ajax-api.itheima.net'
+
+    // 昵称
+    let nameInput = document.querySelector('[name=nickname]')
+
+    // 头像
+    let upload = document.querySelector('#upload')
+    let avatarImg = document.querySelector('.figure img')
+    // 隐藏域
+    let hiddenAvatar = document.querySelector('[name=avatar]')
+
+    // 省市区
+    let form = document.querySelector('form')
+    let provinceSelect = document.querySelector('[name=province]')
+    let citySelect = document.querySelector('[name=city]')
+    let areaSelect = document.querySelector('[name=area]')
+
+
+    // ========================================= 渲染展示功能 =========================================
+    // 获取数据结果，展示到页面中
+    async function render() {
+      let { data: res } = await axios.get('/api/settings')
+
+      // 在继续对res对象进行解构
+      let { data: { area, avatar, city, nickname, province } } = res
+
+      console.log(res)
+      // console.log(res.data.nickname)
+      // console.log(res.data.city)
+      // console.log(res.data.area)
+      // console.log(area, avatar, city, nickname, province)
+
+      // 昵称的值
+      nameInput.value = nickname
+
+      // 省(效果不ok)
+      // 思路：先获取到省市区的数据，再来进行设置
+
+      // 获取到省数据
+      let { data: resProvince } = await axios.get('/api/province')
+
+      // 把省的数据渲染展示到省的下拉框中
+      // console.log(resProvince)
+      // 细节：option标签的value属性记得设置值
+      let provinceStr = resProvince.data.map(item => `<option value="${item}">${item}</option> `).join('')
+      // console.log(provinceStr)
+
+      // innerHTML 内容
+      provinceSelect.innerHTML = `<option value="">--省--</option>${provinceStr}`
+
+
+
+      // 获取到市数据
+      let { data: resCity } = await axios.get('/api/city', {
+        params: {
+          // 查询参数
+          pname: province
+        }
+      })
+      let cityStr = resCity.data.map(item => `<option value="${item}">${item}</option> `).join('')
+      // innerHTML 内容
+      citySelect.innerHTML = `<option value="">--市--</option>${cityStr}`
+
+
+      // 获取到区数据
+      let { data: resArea } = await axios.get('/api/area', {
+        params: {
+          // 查询参数
+          pname: province,
+          cname: city
+        }
+      })
+      let areaStr = resArea.data.map(item => `<option value="${item}">${item}</option> `).join('')
+      // innerHTML 内容
+      areaSelect.innerHTML = `<option value="">--区--</option>${areaStr}`
+
+
+      // value 决定了下拉框的值
+      provinceSelect.value = province
+      citySelect.value = city
+      areaSelect.value = area
+
+      // 图片
+      avatarImg.src = avatar
+      // 解决bug
+      hiddenAvatar.value = avatar
+    }
+    render()
+
+    // ========================================= 省市切换功能 =========================================
+    // 省切换 ==> 当省份改变的时候，去获取到新的省份下的城市数据
+    //  给省注册change事件
+    provinceSelect.addEventListener('change', async function () {
+      // console.log('省改变了')  // 问，如何获取到新的省份（当前选择的省份）
+      // console.log(provinceSelect.value)
+
+      // 获取到市数据 ，记得修改pname查询参数的值
+      let { data: resCity } = await axios.get('/api/city', {
+        params: {
+          // 查询参数
+          pname: provinceSelect.value
+        }
+      })
+      let cityStr = resCity.data.map(item => `<option value="${item}">${item}</option> `).join('')
+      // innerHTML 内容
+      citySelect.innerHTML = `<option value="">--市--</option>${cityStr}`
+
+      // 重置掉区的数据
+      areaSelect.innerHTML = `<option value="">--区--</option>`
+    })
+
+
+    // 市切换
+    citySelect.addEventListener('change', async function () {
+      // 去获取市的数据
+      console.log(citySelect.value)
+
+      // 获取到区数据 （记得修改pname 和 cname 查询参数）
+      let { data: resArea } = await axios.get('/api/area', {
+        params: {
+          // 查询参数
+          pname: provinceSelect.value,
+          cname: citySelect.value
+        }
+      })
+      let areaStr = resArea.data.map(item => `<option value="${item}">${item}</option> `).join('')
+      // innerHTML 内容
+      areaSelect.innerHTML = `<option value="">--区--</option>${areaStr}`
+    })
+
+
+    // ========================================= 头像上传功能 =========================================
+    // 点击图片，模拟点击文件域
+    avatarImg.addEventListener('click', function () {
+      upload.click()
+    })
+
+    // 头像change
+    upload.addEventListener('change', async function () {
+      // console.log('change了')
+
+      // 步骤
+      // 1. 获取到用户选择的文件 ==> this.files[0]
+      // 2. FormData 存用户选择的文件
+      // 3. axios发送请求实现上传头像功能 ==> 在线接口文档  https://www.showdoc.com.cn/1834761734600444/8449568988197077
+
+      // 1. 
+      console.log(this.files[0])
+      // 判断用户是否有选择文件，没有的话，不需要发送请求
+      if (!this.files[0]) {
+        // if成立，说明没有选择文件
+        return // 后续代码不执行
+      }
+
+      // 2. 
+      let fd = new FormData()
+      fd.append('avatar', this.files[0]) // avatar 键，必须有引号
+
+      // 3. 
+      let { data: { data: { url } } } = await axios.post('/api/file', fd)
+      // console.log(url)
+      // 把服务器响应回来的图片给展示出来（修改avatarImg的src）
+      avatarImg.src = url
+
+      // 把头像的路径存到隐藏域中，serialize插件收集到头像数据
+      hiddenAvatar.value = url
+    })
+
+
+    // ========================================= 保存功能 ========================================= 
+    // 步骤
+    // 1. 给form表单注册submit事件
+    // 2. 阻止表单的默认行为
+    // 3. 收集表单数据 ==> serialize()
+    // 4. axios发送请求，提交表单数据进行保存
+
+    // 1. 
+    form.addEventListener('submit', async function (e) {
+      // 2. 
+      e.preventDefault()
+
+      // 3. 
+      // let data = serialize(this) // 格式是   键值对字符串  'name=lw&age=19'   
+      // json字符串  '{"name": "lw", "age": 19}'
+
+      let data = serialize(this, { hash: true }) // 格式是 js对象
+      console.log(data)
+
+      // serialize 收集的数据，缺少 avatar 头像的数据，
+      // 如何解决，使用隐藏域的知识点 type="hidden"  作用：存avatar头像数据，从而serialize 收集到该数据
+
+      // 4. 
+      let { data: res } = await axios.put('/api/settings', data)
+      console.log(res)
+    })
+  </script>
+</body>
+
+</html>
